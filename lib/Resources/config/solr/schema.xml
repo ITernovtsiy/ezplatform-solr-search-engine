@@ -82,7 +82,6 @@ should not remove or drastically change the existing definitions.
 
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
     <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
-    <!-- 19. Deprecated LatLonType, GeoHashField, SpatialPointVectorFieldType, and SpatialTermQueryPrefixTreeFieldType. Instead, switch to LatLonPointSpatialField or SpatialRecursivePrefixTreeFieldType or RptWithGeometrySpatialField. -->
     <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
 
     <!--

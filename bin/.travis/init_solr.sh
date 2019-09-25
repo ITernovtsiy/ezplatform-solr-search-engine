@@ -44,7 +44,7 @@ fi
 download() {
     case ${SOLR_VERSION} in
         # PS!!: Append versions and don't remove old once, kernel uses this script!
-        6.3.0|6.4.1|6.4.2|6.5.1|6.6.0|6.6.5|7.7.2|8.2.0 )
+        6.3.0|6.4.1|6.4.2|6.5.1|6.6.0|6.6.5|7.7.2 )
             url="http://archive.apache.org/dist/lucene/solr/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz"
             ;;
         *)
@@ -219,7 +219,7 @@ solr_cloud_configure_collection() {
 
     local files=("${SOLR_CONFIG[@]}")
 
-    if [[ $SOLR_VERSION =~ ^(7|8) ]]; then
+    if [[ $SOLR_VERSION =~ ^(7) ]]; then
           local config_dir="${INSTALL_DIR}/server/solr/configsets/_default/conf"
     else
           local config_dir="${INSTALL_DIR}/server/solr/configsets/basic_configs/conf"
@@ -231,7 +231,7 @@ solr_cloud_configure_collection() {
     files+=("${config_dir}/stopwords.txt")
     files+=("${config_dir}/synonyms.txt")
 
-    if [[ ! $SOLR_VERSION =~ ^(7|8) ]]; then
+    if [[ ! $SOLR_VERSION =~ ^(7) ]]; then
       files+=("${config_dir}/currency.xml")
       files+=("${config_dir}/elevate.xml")
     fi

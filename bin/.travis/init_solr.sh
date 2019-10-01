@@ -15,7 +15,7 @@ default_shards=('shard0')
 
 SOLR_PORT=${SOLR_PORT:-8983}
 SOLR_DIR=${SOLR_DIR:-'__solr'}
-SOLR_VERSION=${SOLR_VERSION:-'6.6.5'}
+SOLR_VERSION=${SOLR_VERSION:-'7.7.2'}
 SOLR_INSTALL_DIR="${SOLR_DIR}/${SOLR_VERSION}"
 SOLR_DEBUG=${SOLR_DEBUG:-false}
 SOLR_HOME=${SOLR_HOME:-'ezcloud'}
@@ -44,7 +44,7 @@ fi
 download() {
     case ${SOLR_VERSION} in
         # PS!!: Append versions and don't remove old once, kernel uses this script!
-        6.3.0|6.4.1|6.4.2|6.5.1|6.6.0|6.6.5|7.7.2 )
+        7.7.2 )
             url="http://archive.apache.org/dist/lucene/solr/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz"
             ;;
         *)
@@ -131,7 +131,7 @@ wait_for_solr(){
     done
 }
 
-# Run for Solr 6
+# Run for Solr 7
 solr_run() {
     echo "Running with version ${SOLR_VERSION} in standalone mode"
     echo "Starting solr on port ${SOLR_PORT}..."
@@ -143,7 +143,7 @@ solr_run() {
     solr_create_cores
 }
 
-# Create cores for Solr 6
+# Create cores for Solr 7
 solr_create_cores() {
     home_dir="${SOLR_INSTALL_DIR}/server/${SOLR_HOME}"
     template_dir="${home_dir}/template"
@@ -218,23 +218,13 @@ solr_cloud_configure_collection() {
     create_dir ${TEMPLATE_DIR}
 
     local files=("${SOLR_CONFIG[@]}")
-
-    if [[ $SOLR_VERSION =~ ^(7) ]]; then
-          local config_dir="${INSTALL_DIR}/server/solr/configsets/_default/conf"
-    else
-          local config_dir="${INSTALL_DIR}/server/solr/configsets/basic_configs/conf"
-    fi
+    local config_dir="${INSTALL_DIR}/server/solr/configsets/_default/conf"
 
     echo $config_dir;
 
     files+=("${config_dir}/solrconfig.xml")
     files+=("${config_dir}/stopwords.txt")
     files+=("${config_dir}/synonyms.txt")
-
-    if [[ ! $SOLR_VERSION =~ ^(7) ]]; then
-      files+=("${config_dir}/currency.xml")
-      files+=("${config_dir}/elevate.xml")
-    fi
 
     copy_files ${TEMPLATE_DIR} "${files[*]}"
 
